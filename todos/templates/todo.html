@@ -2,46 +2,34 @@
  
 {% block todo_container %}
 <main>
-    <div class="card app-card mb-4">
-        <div class="card-body p-4">
-            <form method="post">
-                <div class="input-group input-group-lg">
-                    <input type="text" name="item" class="form-control"
-                           placeholder="Что нужно сделать?" required
-                           aria-label="Добавить задачу">
-                    <button class="btn btn-gradient px-4" type="submit">＋ Добавить</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <form method="post">
+        <input type="text" name="item" placeholder="Новая задача" required
+               aria-label="Текст новой задачи">
+        <button type="submit">Добавить</button>
+    </form>
  
     {% if todo %}
-    <div class="card app-card">
-        <div class="card-body p-4">
-            <span class="badge bg-secondary mb-2">Задача № {{ todo.id }}</span>
-            <h3 class="mb-4">{{ todo.item }}</h3>
-            <a href="/todo" class="btn btn-outline-secondary">← К списку задач</a>
-        </div>
-    </div>
+    <section class="single">
+        <p class="label">Задача {{ todo.id }}</p>
+        <p class="text">{{ todo.item }}</p>
+        <a href="/todo">Вернуться к списку</a>
+    </section>
     {% else %}
-    <div class="card app-card">
-        <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Мои задачи</h4>
-            <span class="badge rounded-pill bg-primary">Всего: {{ todos | length }}</span>
-        </div>
-        <ul class="list-group list-group-flush mt-2">
+    <section>
+        <h2>Список задач<span class="count">{{ todos | length }}</span></h2>
+        {% if todos %}
+        <ol>
             {% for todo in todos %}
-            <li class="list-group-item d-flex align-items-center">
-                <span class="todo-num">{{ loop.index }}</span>
+            <li>
+                <span class="n">{{ loop.index }}.</span>
                 <a href="/todo/{{ todo.id }}">{{ todo.item }}</a>
             </li>
-            {% else %}
-            <li class="list-group-item text-center text-muted py-5">
-                Пока задач нет — добавьте первую выше 👆
-            </li>
             {% endfor %}
-        </ul>
-    </div>
+        </ol>
+        {% else %}
+        <p class="empty">Задач пока нет. Введите текст выше и нажмите «Добавить».</p>
+        {% endif %}
+    </section>
     {% endif %}
 </main>
 {% endblock %}
